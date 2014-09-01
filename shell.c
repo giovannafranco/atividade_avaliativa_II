@@ -7,17 +7,17 @@
 
 #define TRUE 1
 
+void read_command(char *command, char *parameters[]);
+
 int main(int argc, char *argv[])
 {
     char *path = malloc(256);
     char *command = malloc(256);
-    char *params = malloc(256);
 	char *parameters[3];
     pid_t pid;
     int status;
 
     path = strcpy(path, "/bin/");  // initialize the default path of UNIX systems
-    parameters[2] = NULL; // The last parameters of array is always NULL
     
 	while (TRUE)
 	{
@@ -26,10 +26,9 @@ int main(int argc, char *argv[])
 	    {
 	        printf("\n~$ ");
 	        gets(command);
-	        gets(params);
+	        read_command(command, parameters);
+	        
 	        command = strcat(path, command);
-	        parameters[0] = command;
-            parameters[1] = params;
 	        execve(command, parameters, NULL);
 	    }
 	    else
@@ -41,4 +40,19 @@ int main(int argc, char *argv[])
 	return 0;
 }
 
+void read_command(char *command, char *parameters[])
+{
+    char *token;
+    token = strtok(command, " ");
+	int argc = 0;
+	
+	while(token != NULL)
+	{
+		char *tmp = (char*) malloc(sizeof(char)*strlen(token));
+		strcpy(tmp, token);
+		parameters[argc] = tmp;
+		++argc;
+		token = strtok(NULL, " ");
+	}
+}
 
