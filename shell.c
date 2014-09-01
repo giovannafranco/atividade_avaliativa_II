@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 {
     char *path = malloc(256);
     char *command = malloc(256);
-	char *parameters[3];
+	char *parameters[500];
     pid_t pid;
     int status;
 
@@ -54,5 +54,6 @@ void read_command(char *command, char *parameters[])
 		++argc;
 		token = strtok(NULL, " ");
 	}
+	parameters[argc] = NULL;
 }
 
